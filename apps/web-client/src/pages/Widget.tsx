@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { estimateQuantity, type QuantityResult } from "@revestia/shared";
 import { ApiError, Field, Logo, Spinner, createApi, fmtMoney } from "@revestia/ui";
 import { BEFORE, RoomScene, type PatternKind } from "../components/RoomScene";
+import { API_BASE } from "../api";
 
 /**
  * Experiencia del USUARIO FINAL, embebida en la web del comercio (iframe).
@@ -28,7 +29,7 @@ interface WInfo {
 
 export function Widget() {
   const { slug = "" } = useParams();
-  const wapi = useMemo(() => createApi({ tokenKey: `revestia.widget.${slug}` }), [slug]);
+  const wapi = useMemo(() => createApi({ baseUrl: API_BASE, tokenKey: `revestia.widget.${slug}` }), [slug]);
   const [info, setInfo] = useState<WInfo | null>(null);
   const [error, setError] = useState("");
   const [logged, setLogged] = useState(!!wapi.getToken());

@@ -1,7 +1,10 @@
 import { createApi } from "@revestia/ui";
 
 /** Sesión del SUPERADMIN. Usa su propia clave y su propia audiencia de token en la API. */
+export const API_BASE = (import.meta.env.VITE_API_URL ?? "/api").replace(/\/$/, "");
+
 export const api = createApi({
+  baseUrl: API_BASE,
   tokenKey: "revestia.admin.token",
   onUnauthorized: () => {
     api.setToken(null);

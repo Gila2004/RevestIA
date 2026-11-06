@@ -1,7 +1,10 @@
 import { createApi } from "@revestia/ui";
 
 /** Sesión del COMERCIO. Clave propia: no comparte nada con la app superadmin. */
+export const API_BASE = (import.meta.env.VITE_API_URL ?? "/api").replace(/\/$/, "");
+
 export const api = createApi({
+  baseUrl: API_BASE,
   tokenKey: "revestia.client.token",
   onUnauthorized: () => {
     api.setToken(null);

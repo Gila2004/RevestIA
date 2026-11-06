@@ -10,6 +10,8 @@
     "push": "prisma db push",
     "seed": "tsx prisma/seed.ts",
     "studio": "prisma studio",
+    "pg:schema": "node scripts/pg-schema.mjs",
+    "pg:deploy": "node scripts/pg-schema.mjs && prisma generate --schema prisma/schema.postgres.prisma && prisma db push --skip-generate --schema prisma/schema.postgres.prisma && tsx prisma/seed.ts --if-empty",
     "postinstall": "prisma generate"
   },
   "dependencies": {

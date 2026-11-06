@@ -8,3 +8,5 @@ dist
 !packages/db/.env
 # Configuración local de Claude Code
 .claude/
+packages/db/prisma/schema.postgres.prisma
+dist

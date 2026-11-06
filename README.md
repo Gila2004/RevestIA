@@ -72,10 +72,13 @@ Agregá esto a la configuración MCP de Claude Desktop o Claude Code (ajustá la
 
 Con `REVESTIA_SCOPE=client` y las credenciales de un comercio, el MCP expone las herramientas del comercio (stock, ventas, usuarios).
 
-## Pendientes antes de producción
+## Publicar en Vercel
 
-- Pasar `provider` a `postgresql` en `packages/db/prisma/schema.prisma` y definir `DATABASE_URL`.
-- Definir `JWT_SECRET` (la API no arranca en producción sin él).
+Hay una guía paso a paso en [docs/DEPLOY-VERCEL.md](docs/DEPLOY-VERCEL.md). Son 3 proyectos de Vercel (API, web cliente y web superadmin) y una base Postgres gratuita en Neon.
+
+En desarrollo se usa SQLite. Para producción, el esquema de Postgres se genera automáticamente desde el mismo `schema.prisma` (`npm run pg:schema -w @revestia/db`).
+
+## Pendientes antes de producción
 - Integrar la pasarela de cobro de suscripciones (Mercado Pago / Stripe). Hoy, al cambiar a un plan pago, el comercio queda en estado "Debe" hasta que el superadmin lo marca como pagado.
 - Ajustar precios y límites de los planes en `packages/shared/src/index.ts`.
 - Reemplazar la escena ilustrada del hero por un video o fotos reales si se quiere.

@@ -1,10 +1,15 @@
 // Datos de demostración. Ejecutar: npm run db:seed
+// Con --if-empty no hace nada si la base ya tiene usuarios (se usa en el deploy).
+// En producción definí SEED_ADMIN_EMAIL / SEED_ADMIN_PASSWORD para no usar las credenciales públicas.
 import bcrypt from "bcryptjs";
 import { prisma } from "../src/index";
 
 const DEMO = {
-  superadmin: { email: "admin@revestia.app", password: "RevestIA2026!" },
-  client: { email: "demo@ceramicasdelsur.com", password: "Demo2026!" },
+  superadmin: {
+    email: process.env.SEED_ADMIN_EMAIL ?? "admin@revestia.app",
+    password: process.env.SEED_ADMIN_PASSWORD ?? "RevestIA2026!",
+  },
+  client: { email: "demo@ceramicasdelsur.com", password: process.env.SEED_DEMO_PASSWORD ?? "Demo2026!" },
 };
 
 // PRNG determinístico para que el seed sea reproducible
@@ -39,6 +44,13 @@ const commerces = [
 const names = ["Lucía", "Martín", "Sofía", "Juan", "Valentina", "Tomás", "Camila", "Mateo", "Julieta", "Nicolás", "Agustina", "Federico"];
 
 async function main() {
+  if (process.argv.includes("--if-empty") && (await prisma.user.count()) > 0) {
+    console.log("✔ La base ya tiene datos: seed omitido");
+    return;
+  }
+  if ((process.env.VERCEL || process.env.NODE_ENV === "production") && !process.env.SEED_ADMIN_PASSWORD) {
+    throw new Error("Definí SEED_ADMIN_PASSWORD antes de cargar datos en producción");
+  }
   console.log("Limpiando base…");
   await prisma.$transaction([
     prisma.sale.deleteMany(),
@@ -161,8 +173,10 @@ async function main() {
   }
 
   console.log("✔ Seed listo");
-  console.log(`  SUPERADMIN → ${DEMO.superadmin.email} / ${DEMO.superadmin.password}`);
-  console.log(`  CLIENTE    → ${DEMO.client.email} / ${DEMO.client.password}`);
+  if (!process.env.VERCEL && process.env.NODE_ENV !== "production") {
+    console.log(`  SUPERADMIN → ${DEMO.superadmin.email} / ${DEMO.superadmin.password}`);
+    console.log(`  CLIENTE    → ${DEMO.client.email} / ${DEMO.client.password}`);
+  }
 }
 
 main()
