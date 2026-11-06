@@ -1,0 +1,161 @@
+// RevestIA — modelo de datos
+// SQLite en desarrollo. Para producción: provider = "postgresql" y DATABASE_URL de Postgres.
+// Los "enums" se guardan como String (SQLite) y se validan en @revestia/shared.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+/// Personas que inician sesión. role: SUPERADMIN | CLIENT
+model User {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  passwordHash String
+  name         String
+  role         String
+  commerceId   String?
+  commerce     Commerce? @relation(fields: [commerceId], references: [id], onDelete: Cascade)
+  createdAt    DateTime  @default(now())
+}
+
+/// Comercio de revestimientos (cliente B2B de RevestIA)
+model Commerce {
+  id             String          @id @default(cuid())
+  name           String
+  slug           String          @unique
+  contactEmail   String
+  phone          String?
+  website        String?
+  plan           String          @default("FREE") // FREE | FREEMIUM | PREMIUM
+  planExpiresAt  DateTime?
+  billingStatus  String          @default("PAID") // PAID | DUE
+  createdAt      DateTime        @default(now())
+  users          User[]
+  products       Product[]
+  endUsers       EndUser[]
+  visualizations Visualization[]
+  sales          Sale[]
+  paymentMethods PaymentMethod[]
+}
+
+/// Catálogo maestro administrado por el SUPERADMIN
+model Coating {
+  id          String    @id @default(cuid())
+  name        String
+  category    String // PISO | PARED | EXTERIOR | BANO | COCINA
+  material    String
+  finish      String
+  color       String    @default("#c8b8a6")
+  pattern     String    @default("tile") // tile | plank | stone | mosaic
+  m2PerBox    Float
+  wastePct    Float     @default(10)
+  imageUrl    String?
+  description String?
+  createdAt   DateTime  @default(now())
+  products    Product[]
+}
+
+/// Revestimiento que un comercio vende (precio y stock propios)
+model Product {
+  id             String          @id @default(cuid())
+  commerceId     String
+  commerce       Commerce        @relation(fields: [commerceId], references: [id], onDelete: Cascade)
+  coatingId      String?
+  coating        Coating?        @relation(fields: [coatingId], references: [id], onDelete: SetNull)
+  name           String
+  sku            String?
+  category       String
+  color          String          @default("#c8b8a6")
+  pattern        String          @default("tile")
+  m2PerBox       Float
+  wastePct       Float           @default(10)
+  pricePerBox    Float
+  stockBoxes     Int             @default(0)
+  imageUrl       String?
+  active         Boolean         @default(true)
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  sales          Sale[]
+  visualizations Visualization[]
+}
+
+/// Usuario final del comercio: debe registrarse con email para usar RevestIA
+model EndUser {
+  id             String          @id @default(cuid())
+  commerceId     String
+  commerce       Commerce        @relation(fields: [commerceId], references: [id], onDelete: Cascade)
+  email          String
+  name           String?
+  createdAt      DateTime        @default(now())
+  visualizations Visualization[]
+  sales          Sale[]
+
+  @@unique([commerceId, email])
+}
+
+/// Cada vez que un usuario final visualiza un revestimiento en su ambiente
+model Visualization {
+  id         String   @id @default(cuid())
+  commerceId String
+  commerce   Commerce @relation(fields: [commerceId], references: [id], onDelete: Cascade)
+  endUserId  String
+  endUser    EndUser  @relation(fields: [endUserId], references: [id], onDelete: Cascade)
+  productId  String?
+  product    Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+  areaM2     Float?
+  boxes      Int?
+  createdAt  DateTime @default(now())
+}
+
+/// Venta concretada con ayuda de RevestIA
+model Sale {
+  id         String   @id @default(cuid())
+  commerceId String
+  commerce   Commerce @relation(fields: [commerceId], references: [id], onDelete: Cascade)
+  endUserId  String?
+  endUser    EndUser? @relation(fields: [endUserId], references: [id], onDelete: SetNull)
+  productId  String?
+  product    Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+  boxes      Int
+  areaM2     Float
+  total      Float
+  createdAt  DateTime @default(now())
+}
+
+/// Medios de pago que acepta el comercio. type: MERCADOPAGO | TRANSFERENCIA | TARJETA | EFECTIVO | OTRO
+model PaymentMethod {
+  id         String   @id @default(cuid())
+  commerceId String
+  commerce   Commerce @relation(fields: [commerceId], references: [id], onDelete: Cascade)
+  type       String
+  label      String
+  details    String?
+  active     Boolean  @default(true)
+  createdAt  DateTime @default(now())
+}
+
+/// Emails capturados en la landing de clientes (interesados que aún no crearon cuenta)
+model Lead {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  company   String?
+  source    String   @default("landing")
+  status    String   @default("NEW") // NEW | CONVERTED
+  createdAt DateTime @default(now())
+}
+
+/// Visitas a la landing de clientes (para medir quién entró y no se registró)
+model PageView {
+  id        String   @id @default(cuid())
+  visitorId String
+  path      String
+  createdAt DateTime @default(now())
+
+  @@index([visitorId])
+}

@@ -1,0 +1,10 @@
+node_modules
+dist
+.env
+*.db
+*.db-journal
+.DS_Store
+# El .env de la base solo tiene la ruta del SQLite de desarrollo (sin secretos)
+!packages/db/.env
+# Configuración local de Claude Code
+.claude/

@@ -1,0 +1,25 @@
+{
+  "name": "revestia",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "workspaces": ["packages/*", "apps/*"],
+  "scripts": {
+    "setup": "npm install && npm run db:push && npm run db:seed",
+    "db:push": "npm run push -w @revestia/db",
+    "db:seed": "npm run seed -w @revestia/db",
+    "db:studio": "npm run studio -w @revestia/db",
+    "dev": "concurrently -n api,cliente,admin -c yellow,magenta,cyan \"npm run dev -w @revestia/api\" \"npm run dev -w @revestia/web-client\" \"npm run dev -w @revestia/web-admin\"",
+    "dev:api": "npm run dev -w @revestia/api",
+    "dev:client": "npm run dev -w @revestia/web-client",
+    "dev:admin": "npm run dev -w @revestia/web-admin",
+    "mcp": "npm run start -w @revestia/mcp",
+    "build": "npm run build -w @revestia/web-client && npm run build -w @revestia/web-admin",
+    "typecheck": "npm run typecheck --workspaces --if-present"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3"
+  }
+}
