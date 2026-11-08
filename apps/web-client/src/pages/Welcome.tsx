@@ -116,7 +116,7 @@ export function Welcome() {
           <div className="welcome-nav">
             <a href="#beneficios">Beneficios</a>
             <a href="#planes">Planes</a>
-            <a href="#faq">Preguntas</a>
+            <a href="#faq">Preguntas frecuentes</a>
             <Link to="/ingresar" className="btn btn-accent btn-sm">
               LOGIN
             </Link>
@@ -226,7 +226,7 @@ export function Welcome() {
           </div>
           <div className="faq">
             {FAQ.map((f) => (
-              <details key={f.q}>
+              <details key={f.q} open>
                 <summary>{f.q}</summary>
                 <p>{f.a}</p>
               </details>
@@ -253,13 +253,13 @@ export function Welcome() {
       <footer className="footer">
         <div className="container spread">
           <Logo size={22} />
-          <span className="muted">© {new Date().getFullYear()} REVEST.IA. Hecho para comercios de revestimientos.</span>
-        </div>
-        {/* Acceso oculto al Superadmin: invisible (mismo color que el fondo) hasta pasar el mouse por encima */}
-        <div className="container hidden-access">
-          <a href={ADMIN_URL} className="hidden-link">
-            SUPER ADMIN
-          </a>
+          <span className="muted footer-right">
+            © {new Date().getFullYear()} REVEST.IA. Hecho para comercios de revestimientos.
+            {/* Acceso discreto al Superadmin (web separada, pide sus propias credenciales) */}
+            <a href={ADMIN_URL} className="admin-link">
+              SUPER ADMIN
+            </a>
+          </span>
         </div>
       </footer>
     </div>
