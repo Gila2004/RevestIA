@@ -34,13 +34,13 @@ export function Charts() {
             <div className="chart-box">
               <ResponsiveContainer>
                 <ComposedChart data={rows}>
-                  <CartesianGrid vertical={false} stroke="#e4d9cb" />
+                  <CartesianGrid vertical={false} stroke="#d9e4ee" />
                   <XAxis dataKey="mes" tickLine={false} axisLine={false} fontSize={12} />
                   <YAxis tickLine={false} axisLine={false} fontSize={12} width={36} allowDecimals={false} />
                   <Tooltip formatter={(v: number, n: string) => [v, n]} />
                   <Legend iconType="circle" />
-                  <Bar dataKey="visualizaciones" name="Visualizaciones" fill="#7c8c6e" radius={[6, 6, 0, 0]} />
-                  <Bar dataKey="ventas" name="Ventas" fill="#b5653b" radius={[6, 6, 0, 0]} />
+                  <Bar dataKey="visualizaciones" name="Visualizaciones" fill="#14a3a0" radius={[6, 6, 0, 0]} />
+                  <Bar dataKey="ventas" name="Ventas" fill="#1f6fb2" radius={[6, 6, 0, 0]} />
                 </ComposedChart>
               </ResponsiveContainer>
             </div>
@@ -51,13 +51,13 @@ export function Charts() {
             <div className="chart-box">
               <ResponsiveContainer>
                 <ComposedChart data={rows}>
-                  <CartesianGrid vertical={false} stroke="#e4d9cb" />
+                  <CartesianGrid vertical={false} stroke="#d9e4ee" />
                   <XAxis dataKey="mes" tickLine={false} axisLine={false} fontSize={12} />
                   <YAxis tickLine={false} axisLine={false} fontSize={12} width={36} allowDecimals={false} />
                   <Tooltip />
                   <Legend iconType="circle" />
-                  <Bar dataKey="leads" name="Leads (emails)" fill="#d9cfc1" radius={[6, 6, 0, 0]} />
-                  <Line dataKey="nuevosComercios" name="Nuevos comercios" stroke="#1e1b18" strokeWidth={2.5} dot={{ r: 4 }} />
+                  <Bar dataKey="leads" name="Leads (emails)" fill="#b9d3e8" radius={[6, 6, 0, 0]} />
+                  <Line dataKey="nuevosComercios" name="Nuevos comercios" stroke="#0f2a44" strokeWidth={2.5} dot={{ r: 4 }} />
                 </ComposedChart>
               </ResponsiveContainer>
             </div>

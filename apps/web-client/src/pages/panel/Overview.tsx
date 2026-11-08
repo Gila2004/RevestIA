@@ -39,8 +39,8 @@ export function Overview() {
                 <YAxis tickLine={false} axisLine={false} fontSize={12} width={32} allowDecimals={false} />
                 <Tooltip cursor={{ fill: "rgba(0,0,0,.04)" }} />
                 <Legend iconType="circle" />
-                <Bar dataKey="visualizaciones" name="Visualizaciones" fill="#7c8c6e" radius={[6, 6, 0, 0]} />
-                <Bar dataKey="ventas" name="Ventas" fill="#b5653b" radius={[6, 6, 0, 0]} />
+                <Bar dataKey="visualizaciones" name="Visualizaciones" fill="#14a3a0" radius={[6, 6, 0, 0]} />
+                <Bar dataKey="ventas" name="Ventas" fill="#1f6fb2" radius={[6, 6, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>

@@ -3,7 +3,7 @@
   display: grid;
   place-items: center;
   padding: 16px;
-  background: radial-gradient(800px 500px at 100% 0%, rgba(181, 101, 59, 0.35), transparent 60%), var(--ink);
+  background: radial-gradient(800px 500px at 100% 0%, rgba(20, 163, 160, 0.35), transparent 60%), var(--ink);
 }
 .admin-login .card {
   width: 100%;

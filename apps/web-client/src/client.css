@@ -3,9 +3,9 @@
   position: sticky;
   top: 0;
   z-index: 20;
-  background: rgba(246, 241, 234, 0.86);
+  background: rgba(255, 255, 255, 0.88);
   backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(228, 217, 203, 0.7);
+  border-bottom: 1px solid rgba(217, 228, 238, 0.8);
 }
 .nav-inner {
   display: flex;
@@ -52,8 +52,11 @@
   margin: 14px 0 18px;
 }
 .hero h1 em {
-  font-style: italic;
-  color: var(--accent);
+  font-style: normal;
+  background: linear-gradient(90deg, var(--accent), var(--sage));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 .lead {
   font-size: clamp(16px, 1.6vw, 19px);
@@ -139,7 +142,7 @@
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.04em;
-  background: rgba(30, 27, 24, 0.7);
+  background: rgba(15, 42, 68, 0.7);
   color: #fff;
   pointer-events: none;
 }
@@ -322,22 +325,22 @@
   width: 15px;
   height: 15px;
   border-radius: 4px;
-  background: var(--sage-soft) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8.5l2.5 2.5L12 5.5' stroke='%234d5a41' stroke-width='2' fill='none'/%3E%3C/svg%3E") center/12px no-repeat;
+  background: var(--sage-soft) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8.5l2.5 2.5L12 5.5' stroke='%230d7f7c' stroke-width='2' fill='none'/%3E%3C/svg%3E") center/12px no-repeat;
 }
 .plan-hl {
   background: var(--ink);
-  color: #f6efe6;
+  color: #f2f8fc;
   border-color: var(--ink);
   transform: translateY(-8px);
   box-shadow: var(--shadow-lg);
 }
 .plan-hl .plan-tag,
 .plan-hl .plan-price span {
-  color: #b9ad9f;
+  color: #9fb4c8;
 }
 .plan-hl li::before {
   background-color: rgba(255, 255, 255, 0.12);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8.5l2.5 2.5L12 5.5' stroke='%23e5a37e' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8.5l2.5 2.5L12 5.5' stroke='%235fd6cf' stroke-width='2' fill='none'/%3E%3C/svg%3E");
 }
 .plan-ribbon {
   position: absolute;
@@ -359,7 +362,7 @@
   align-items: center;
   padding: clamp(28px, 5vw, 56px);
   border-radius: 28px;
-  background: linear-gradient(135deg, var(--accent), #8f4a27);
+  background: linear-gradient(135deg, var(--accent), var(--sage));
   color: #fff;
 }
 .cta-band h2 {
@@ -535,11 +538,22 @@ table.pricing {
   color: var(--ink-2);
   margin: 0 0 18px;
 }
-/* Enlace oculto: se ve igual que el texto que lo rodea */
+/* Enlace oculto al Superadmin: mismo color que el fondo, aparece al pasar el mouse o con Tab */
+.hidden-access {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 10px;
+}
 .hidden-link {
-  color: inherit;
+  color: var(--bg);
+  font-size: 11px;
+  letter-spacing: 0.12em;
   text-decoration: none;
-  cursor: text;
+  transition: color 0.2s;
+}
+.hidden-link:hover,
+.hidden-link:focus-visible {
+  color: var(--muted);
 }
 
 /* ---------- Auth ---------- */
