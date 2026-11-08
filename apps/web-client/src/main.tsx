@@ -4,6 +4,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import "@revestia/ui/styles.css";
 import "./client.css";
 import { Landing } from "./pages/Landing";
+import { Welcome } from "./pages/Welcome";
 import { Login, Register } from "./pages/Auth";
 import { Widget } from "./pages/Widget";
 import { PanelLayout } from "./pages/panel/Layout";
@@ -23,7 +24,8 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Landing />} />
+        <Route path="/" element={<Welcome />} />
+        <Route path="/comercios" element={<Landing />} />
         <Route path="/registro" element={<Register />} />
         <Route path="/ingresar" element={<Login />} />
         <Route path="/w/:slug" element={<Widget />} />
@@ -42,7 +44,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
           <Route path="pagos" element={<Payments />} />
           <Route path="plan" element={<PlanPage />} />
         </Route>
-        {/* La app de clientes no tiene rutas de superadmin: cualquier otra ruta vuelve al inicio */}
+        {/* La app de clientes no tiene rutas de superadmin (solo un enlace oculto en el pie de "/"): cualquier otra ruta vuelve al inicio */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>

@@ -64,6 +64,7 @@ Si la base ya tiene datos, no se borra nada.
    | Nombre | Valor |
    |---|---|
    | `VITE_API_URL` | `https://revestia-api.vercel.app/api` (la URL de tu API **con** `/api` al final) |
+   | `VITE_ADMIN_URL` | `https://revestia-admin.vercel.app` (la web superadmin; la usa el enlace oculto del pie de la bienvenida) |
 
 4. Hacé click en **Deploy**.
 

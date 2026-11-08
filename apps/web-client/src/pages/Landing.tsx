@@ -218,7 +218,7 @@ function CalcDemo() {
   );
 }
 
-function LeadForm() {
+export function LeadForm() {
   const [email, setEmail] = useState("");
   const [company, setCompany] = useState("");
   const [state, setState] = useState<"idle" | "sending" | "ok" | "error">("idle");
