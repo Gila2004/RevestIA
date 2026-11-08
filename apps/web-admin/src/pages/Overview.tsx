@@ -2,7 +2,7 @@ import { Kpi, Spinner, fmtMoney, fmtNum, fmtPct, fmtUsd } from "@revestia/ui";
 import type { Metrics } from "../api";
 import { useLoad } from "../Layout";
 
-const PLAN_COLORS: Record<string, string> = { FREE: "#d9cfc1", FREEMIUM: "#7c8c6e", PREMIUM: "#b5653b" };
+const PLAN_COLORS: Record<string, string> = { FREE: "#b9d3e8", FREEMIUM: "#14a3a0", PREMIUM: "#1f6fb2" };
 
 export function Overview() {
   const { data: m } = useLoad<Metrics>("/admin/metrics");

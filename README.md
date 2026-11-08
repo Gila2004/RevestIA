@@ -35,6 +35,7 @@ Usuarios de demo (los crea `npm run db:seed`):
 |---|---|---|
 | Superadmin | admin@revestia.app | RevestIA2026! |
 | Cliente (comercio) | demo@ceramicasdelsur.com | Demo2026! |
+| Cliente (presentaciones, mismo comercio) | juliana.paz211@gmail.com | 123 |
 
 ## Scripts
 

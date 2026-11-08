@@ -10,6 +10,8 @@ const DEMO = {
     password: process.env.SEED_ADMIN_PASSWORD ?? "RevestIA2026!",
   },
   client: { email: "demo@ceramicasdelsur.com", password: process.env.SEED_DEMO_PASSWORD ?? "Demo2026!" },
+  // Usuaria para presentaciones: entra al mismo comercio demo (Cerámicas del Sur, plan Premium)
+  presenter: { email: "juliana.paz211@gmail.com", password: process.env.SEED_PRESENTER_PASSWORD ?? "123" },
 };
 
 // PRNG determinístico para que el seed sea reproducible
@@ -93,12 +95,17 @@ async function main() {
         planExpiresAt: c.plan === "FREE" ? null : new Date(Date.now() + between(-20, 45) * 86400000),
         createdAt,
         users: {
-          create: {
-            email: i === 0 ? DEMO.client.email : `admin@${slug}.com`,
-            name: i === 0 ? "Carla Méndez" : `Admin ${c.name}`,
-            role: "CLIENT",
-            passwordHash: clientHash,
-          },
+          create: [
+            {
+              email: i === 0 ? DEMO.client.email : `admin@${slug}.com`,
+              name: i === 0 ? "Carla Méndez" : `Admin ${c.name}`,
+              role: "CLIENT",
+              passwordHash: clientHash,
+            },
+            ...(i === 0
+              ? [{ email: DEMO.presenter.email, name: "Juliana Paz", role: "CLIENT", passwordHash: await bcrypt.hash(DEMO.presenter.password, 10) }]
+              : []),
+          ],
         },
         paymentMethods: {
           create: [
@@ -176,6 +183,7 @@ async function main() {
   if (!process.env.VERCEL && process.env.NODE_ENV !== "production") {
     console.log(`  SUPERADMIN → ${DEMO.superadmin.email} / ${DEMO.superadmin.password}`);
     console.log(`  CLIENTE    → ${DEMO.client.email} / ${DEMO.client.password}`);
+    console.log(`  CLIENTE    → ${DEMO.presenter.email} / ${DEMO.presenter.password}`);
   }
 }
 

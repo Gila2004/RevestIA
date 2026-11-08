@@ -45,7 +45,7 @@ export function AdminLayout() {
         <div className="sidebar-foot">
           <button
             className="btn btn-ghost btn-sm"
-            style={{ color: "#efe6da", borderColor: "rgba(255,255,255,.18)", width: "100%" }}
+            style={{ color: "#e8f1f8", borderColor: "rgba(255,255,255,.18)", width: "100%" }}
             onClick={() => {
               api.setToken(null);
               nav("/login");

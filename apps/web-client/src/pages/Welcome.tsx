@@ -132,8 +132,8 @@ export function Welcome() {
               Transformá tu catálogo pasivo en una experiencia de compra interactiva con <em>IA y Realidad Aumentada.</em>
             </h1>
             <p className="lead">
-              REVEST.IA es la solución B2B SaaS White-Label que permite a tus clientes visualizar revestimientos, cerámicos y porcelanatos
-              directamente en sus propios ambientes, calcular insumos sin margen de error y concretar compras con total seguridad.
+              Menos consultas repetitivas, más ventas cerradas. REVEST.IA permite a tus clientes visualizar revestimientos en su espacio real,
+              recibir recomendaciones inteligentes de IA y calcular insumos exactos con tu stock sincronizado en tiempo real.
             </p>
             <div className="row">
               <Link to="/comercios" className="btn btn-accent btn-lg">
@@ -253,13 +253,13 @@ export function Welcome() {
       <footer className="footer">
         <div className="container spread">
           <Logo size={22} />
-          <span className="muted">
-            {/* Acceso oculto al Superadmin: el "©" es un enlace que no se distingue del texto */}
-            <a href={ADMIN_URL} className="hidden-link" aria-label="Superadmin">
-              ©
-            </a>{" "}
-            {new Date().getFullYear()} REVEST.IA. Hecho para comercios de revestimientos.
-          </span>
+          <span className="muted">© {new Date().getFullYear()} REVEST.IA. Hecho para comercios de revestimientos.</span>
+        </div>
+        {/* Acceso oculto al Superadmin: invisible (mismo color que el fondo) hasta pasar el mouse por encima */}
+        <div className="container hidden-access">
+          <a href={ADMIN_URL} className="hidden-link">
+            SUPER ADMIN
+          </a>
         </div>
       </footer>
     </div>

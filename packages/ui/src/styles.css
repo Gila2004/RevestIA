@@ -2,31 +2,32 @@
    RevestIA — sistema de diseño compartido
    Cambiá la paleta acá y se actualizan las dos webs.
    ========================================================= */
-@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap");
+/* Manrope: alternativa web a Aptos Display (Aptos no está en Google Fonts; si el equipo la tiene instalada, se usa primero) */
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap");
 
 :root {
-  --bg: #f6f1ea;          /* arena */
-  --surface: #fffdf9;
-  --surface-2: #efe7dc;
-  --ink: #1e1b18;         /* carbón */
-  --ink-2: #3a342e;
-  --muted: #6e655c;
-  --line: #e4d9cb;
-  --accent: #b5653b;      /* terracota */
-  --accent-strong: #9a522d;
-  --accent-soft: #f3e2d6;
-  --sage: #7c8c6e;        /* salvia */
-  --sage-soft: #e4e9dd;
-  --ok: #4f7a4a;
-  --ok-soft: #e1ecdc;
-  --warn: #b2452f;
-  --warn-soft: #f7ddd5;
+  --bg: #f5f9fc;          /* blanco azulado */
+  --surface: #ffffff;     /* blanco */
+  --surface-2: #e9f1f7;
+  --ink: #0f2a44;         /* azul marino */
+  --ink-2: #2a4560;
+  --muted: #5d7186;
+  --line: #d9e4ee;
+  --accent: #1f6fb2;      /* azul */
+  --accent-strong: #185a91;
+  --accent-soft: #e2eef9;
+  --sage: #14a3a0;        /* verde agua */
+  --sage-soft: #daf3f1;
+  --ok: #1d8a6b;
+  --ok-soft: #dcf2ea;
+  --warn: #c0392b;
+  --warn-soft: #f9e0dc;
   --radius: 14px;
   --radius-lg: 22px;
-  --shadow: 0 1px 2px rgba(30, 27, 24, 0.05), 0 8px 24px rgba(30, 27, 24, 0.06);
-  --shadow-lg: 0 24px 60px rgba(30, 27, 24, 0.14);
-  --font-display: "Fraunces", Georgia, serif;
-  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --shadow: 0 1px 2px rgba(15, 42, 68, 0.05), 0 8px 24px rgba(15, 42, 68, 0.07);
+  --shadow-lg: 0 24px 60px rgba(15, 42, 68, 0.16);
+  --font-display: "Aptos Display", "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-body: "Aptos", "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
   color-scheme: light;
 }
 
@@ -51,10 +52,10 @@ h2,
 h3,
 h4 {
   font-family: var(--font-display);
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1.12;
   margin: 0 0 0.4em;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
 }
 p {
   margin: 0 0 1em;
@@ -301,7 +302,7 @@ textarea {
 }
 .badge-sage {
   background: var(--sage-soft);
-  color: #4d5a41;
+  color: #0d7f7c;
 }
 
 /* ---------- Formularios ---------- */
@@ -402,7 +403,7 @@ table.sheet {
   color: var(--ink);
 }
 .sheet tbody tr:hover {
-  background: #fbf7f1;
+  background: #f3f8fc;
 }
 .sheet tbody tr:last-child td {
   border-bottom: 0;
@@ -498,7 +499,7 @@ table.sheet {
   font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
   font-size: 12.5px;
   background: var(--ink);
-  color: #f3e9dc;
+  color: #e6f0f8;
   padding: 14px 16px;
   border-radius: 12px;
   overflow-x: auto;
@@ -581,10 +582,10 @@ table.sheet {
 .theme-admin .sidebar {
   background: var(--ink);
   border-color: var(--ink);
-  color: #efe6da;
+  color: #e8f1f8;
 }
 .theme-admin .sidebar nav a {
-  color: #d9cfc3;
+  color: #c9d9e7;
 }
 .theme-admin .sidebar nav a:hover {
   background: rgba(255, 255, 255, 0.06);
@@ -594,7 +595,7 @@ table.sheet {
   color: #fff;
 }
 .theme-admin .sidebar .muted {
-  color: #a59a8d;
+  color: #8ea6bd;
 }
 
 @media (max-width: 860px) {
