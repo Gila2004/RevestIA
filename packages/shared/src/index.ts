@@ -21,7 +21,15 @@ export type PaymentType = (typeof PAYMENT_TYPES)[number];
 export interface PlanDefinition {
   code: PlanCode;
   name: string;
+  /** Segundo nombre comercial, ej: "Pilot Trial" */
+  subtitle: string;
   priceMonthlyUsd: number;
+  /** Aclaración del precio, ej: "durante 14 días" */
+  priceNote?: string;
+  /** Fee de implementación (pago único). 0 = sin costo de setup */
+  setupFeeUsd: number;
+  setupFeeNote?: string;
+  /** Perfil de cliente al que apunta el plan */
   tagline: string;
   /** Visualizaciones por mes. null = ilimitadas */
   visualizationsPerMonth: number | null;
@@ -31,54 +39,88 @@ export interface PlanDefinition {
   highlighted?: boolean;
 }
 
-/** Precios de referencia: ajustar según estrategia comercial. */
+/**
+ * Única fuente de verdad de los planes: la usan la bienvenida, /comercios, el registro,
+ * el panel del cliente, los límites de la API y el MRR del superadmin.
+ */
 export const PLANS: Record<PlanCode, PlanDefinition> = {
   FREE: {
     code: "FREE",
     name: "Free",
+    subtitle: "Pilot Trial",
     priceMonthlyUsd: 0,
-    tagline: "Probá RevestIA sin costo",
-    visualizationsPerMonth: 1,
-    maxProducts: 3,
+    priceNote: "durante 14 días",
+    setupFeeUsd: 0,
+    tagline: "Locales o corralones en fase de prueba/validación.",
+    visualizationsPerMonth: null,
+    maxProducts: 20,
     features: [
-      "1 visualización de ambiente",
-      "Calculadora de cantidades (m² → cajas)",
-      "Hasta 3 revestimientos cargados",
-      "Registro obligatorio del usuario por email",
+      "Prueba gratuita de 14 días, sin costo de setup",
+      "Hasta 20 SKUs de productos",
+      "Visualizador AR + IA (básico)",
+      "Calculadora estándar (m²)",
+      "Métricas básicas de uso",
+      "Soporte vía correo electrónico",
     ],
   },
   FREEMIUM: {
     code: "FREEMIUM",
     name: "Freemium",
-    priceMonthlyUsd: 29,
-    tagline: "Para comercios que empiezan a digitalizar su venta",
-    visualizationsPerMonth: 150,
-    maxProducts: 50,
+    subtitle: "Standard SaaS",
+    priceMonthlyUsd: 20,
+    // ~4,5 meses de licencia: carga del catálogo (hasta 500 SKUs), marca y capacitación
+    setupFeeUsd: 90,
+    setupFeeNote: "pago único",
+    tagline: "Comercios y distribuidores de gama media/alta con presencia digital.",
+    visualizationsPerMonth: null,
+    maxProducts: 500,
     highlighted: true,
     features: [
-      "150 visualizaciones por mes",
-      "Hasta 50 revestimientos con precio y stock",
-      "Base de emails de tus usuarios",
-      "Registro de ventas hechas con RevestIA",
-      "Widget para integrar en tu web",
+      "Logo y colores de tu marca",
+      "Hasta 500 SKUs sincronizados",
+      "Visualizador AR + IA de recomendación avanzada",
+      "Calculadora + desperdicio + conversión a cajas",
+      "Tablero de analítica de ventas e interés de clientes",
+      "Sincronización diaria de stock",
+      "Soporte prioritario y capacitación comercial",
     ],
   },
   PREMIUM: {
     code: "PREMIUM",
     name: "Premium",
-    priceMonthlyUsd: 79,
-    tagline: "Escalá con visualizaciones ilimitadas y métricas",
+    subtitle: "Enterprise / Custom",
+    priceMonthlyUsd: 35,
+    priceNote: "o a medida",
+    // ~5,5 meses de licencia: suma migración de catálogo, dominio propio e integración ERP (tope USD 200)
+    setupFeeUsd: 190,
+    setupFeeNote: "pago único: setup avanzado + migración",
+    tagline: "Cadenas nacionales o distribuidores mayoristas multibrand.",
     visualizationsPerMonth: null,
     maxProducts: null,
     features: [
-      "Visualizaciones ilimitadas",
-      "Catálogo ilimitado",
-      "Métricas de conversión: quién vio y no compró",
-      "Exportación de emails (CSV)",
-      "Marca personalizada y soporte prioritario",
+      "White-Label total con dominio propio",
+      "Catálogo ilimitado de productos",
+      "Visualizador AR + IA en ultra HD con IA predictiva",
+      "Integración directa con pasarela de pago/ERP",
+      "Dashboard BI avanzado + CRM de prospectos integrado",
+      "Stock e inventario en tiempo real",
+      "Account Manager dedicado 24/7 y SLA garantizado",
     ],
   },
 };
+
+/** Precio mensual para mostrar: "Gratis", "USD 20 / mes"... */
+export function formatPlanPrice(p: PlanDefinition, withNote = false): string {
+  const base = p.priceMonthlyUsd === 0 ? "USD 0 / mes" : `USD ${p.priceMonthlyUsd.toLocaleString("es-AR")} / mes`;
+  return withNote && p.priceNote ? `${base} (${p.priceNote})` : base;
+}
+
+/** Fee de implementación para mostrar: "Sin costo de setup", "USD 90 (pago único)"... */
+export function formatSetupFee(p: PlanDefinition): string {
+  if (p.setupFeeUsd === 0) return "Sin costo de setup";
+  const base = `USD ${p.setupFeeUsd.toLocaleString("es-AR")}`;
+  return p.setupFeeNote ? `${base} (${p.setupFeeNote})` : base;
+}
 
 export interface QuantityInput {
   /** Superficie a cubrir en m² */

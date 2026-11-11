@@ -1,6 +1,6 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { Link } from "react-router-dom";
-import { PLANS, type PlanDefinition } from "@revestia/shared";
+import { PLANS, formatSetupFee, type PlanDefinition } from "@revestia/shared";
 import { Logo } from "@revestia/ui";
 import { BeforeAfter } from "../components/BeforeAfter";
 import { api, visitorId } from "../api";
@@ -158,6 +158,7 @@ function PlanCard({ plan }: { plan: PlanDefinition }) {
     <article className={`plan ${plan.highlighted ? "plan-hl" : ""}`}>
       {plan.highlighted && <span className="plan-ribbon">Más elegido</span>}
       <h3>{plan.name}</h3>
+      <p className="plan-sub">{plan.subtitle}</p>
       <p className="plan-tag">{plan.tagline}</p>
       <div className="plan-price">
         {plan.priceMonthlyUsd === 0 ? (
@@ -168,7 +169,9 @@ function PlanCard({ plan }: { plan: PlanDefinition }) {
             <span>/mes</span>
           </>
         )}
+        {plan.priceNote && <span>({plan.priceNote})</span>}
       </div>
+      <p className="plan-fee">Implementación: {formatSetupFee(plan)}</p>
       <ul>
         {plan.features.map((f) => (
           <li key={f}>{f}</li>
