@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { PLANS, type PlanCode } from "@revestia/shared";
+import { PLANS, formatSetupFee, type PlanCode } from "@revestia/shared";
 import { Badge, fmtDate } from "@revestia/ui";
 import { api } from "../../api";
 import { usePanel } from "./Layout";
@@ -59,6 +59,10 @@ export function PlanPage() {
               <h3 style={{ margin: 0 }}>{p.name}</h3>
               <strong>{p.priceMonthlyUsd ? `USD ${p.priceMonthlyUsd}/mes` : "Gratis"}</strong>
             </div>
+            <span className="muted" style={{ fontSize: 13, marginTop: -8 }}>
+              {p.subtitle}
+              {p.priceNote ? ` · ${p.priceNote}` : ""} · Implementación: {formatSetupFee(p)}
+            </span>
             <ul style={{ margin: 0, paddingLeft: 18, color: "var(--ink-2)", fontSize: 14 }}>
               {p.features.map((f) => <li key={f}>{f}</li>)}
             </ul>

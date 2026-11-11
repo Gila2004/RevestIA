@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Logo } from "@revestia/ui";
+import { PLAN_CODES, PLANS, formatPlanPrice, formatSetupFee, type PlanDefinition } from "@revestia/shared";
 import { BeforeAfter } from "../components/BeforeAfter";
 import { api, visitorId } from "../api";
 import { LeadForm } from "./Landing";
@@ -42,25 +43,19 @@ const B2C = [
   },
 ];
 
-const PLAN_COLS = [
-  { name: "Free / Pilot Trial", hl: false },
-  { name: "Freemium (Standard SaaS)", hl: true },
-  { name: "Premium (Enterprise / Custom)", hl: false },
-];
+// Columnas y filas numéricas salen de PLANS (packages/shared): misma fuente que el resto de la app.
+const PLAN_COLS = PLAN_CODES.map((code) => PLANS[code]);
+const byPlan = (fn: (p: PlanDefinition) => string) => PLAN_COLS.map(fn) as [string, string, string];
 
 const PLAN_ROWS: { label: string; values: [string, string, string]; strong?: boolean }[] = [
-  { label: "Precio licencia mensual", values: ["USD 0 / mes (durante 14 días)", "USD 20 / mes", "USD 35 / mes (o a medida)"], strong: true },
-  { label: "Fee de implementación", values: ["Sin costo de setup", "USD 2.000 (pago único)", "USD 50 (setup avanzado + migración)"] },
-  {
-    label: "Perfil de cliente",
-    values: [
-      "Locales o corralones en fase de prueba/validación.",
-      "Comercios y distribuidores de gama media/alta con presencia digital.",
-      "Cadenas nacionales o distribuidores mayoristas multibrand.",
-    ],
-  },
+  { label: "Precio licencia mensual", values: byPlan((p) => formatPlanPrice(p, true)), strong: true },
+  { label: "Fee de implementación", values: byPlan(formatSetupFee) },
+  { label: "Perfil de cliente", values: byPlan((p) => p.tagline) },
   { label: "Personalización White-Label", values: ["Genérica / Logo REVEST.IA", "Logo y colores de tu marca", "Customización White-Label total (dominio propio)"] },
-  { label: "Límite de catálogo", values: ["Hasta 20 SKUs de productos", "Hasta 500 SKUs sincronizados", "Catálogo ilimitado de productos"] },
+  {
+    label: "Límite de catálogo",
+    values: byPlan((p) => (p.maxProducts == null ? "Catálogo ilimitado de productos" : `Hasta ${p.maxProducts.toLocaleString("es-AR")} SKUs de productos`)),
+  },
   { label: "Visualizador AR + IA", values: ["Incluido (básico)", "Incluido (IA de recomendación avanzada)", "Incluido (rendimiento ultra HD + IA predictiva)"] },
   {
     label: "Cálculo automático de metraje",
@@ -194,9 +189,9 @@ export function Welcome() {
                 <tr>
                   <th scope="col">Característica / Plan</th>
                   {PLAN_COLS.map((c) => (
-                    <th key={c.name} scope="col" className={c.hl ? "hl" : ""}>
-                      {c.hl && <span className="pricing-badge">Recomendado</span>}
-                      Plan {c.name}
+                    <th key={c.code} scope="col" className={c.highlighted ? "hl" : ""}>
+                      {c.highlighted && <span className="pricing-badge">Recomendado</span>}
+                      Plan {c.name} / {c.subtitle}
                     </th>
                   ))}
                 </tr>
@@ -206,7 +201,7 @@ export function Welcome() {
                   <tr key={r.label} className={r.strong ? "strong" : ""}>
                     <th scope="row">{r.label}</th>
                     {r.values.map((v, i) => (
-                      <td key={i} className={PLAN_COLS[i].hl ? "hl" : ""}>
+                      <td key={i} className={PLAN_COLS[i].highlighted ? "hl" : ""}>
                         {v}
                       </td>
                     ))}
