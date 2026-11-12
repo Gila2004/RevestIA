@@ -6,7 +6,8 @@ import { prisma } from "../src/index";
 
 const DEMO = {
   superadmin: {
-    email: process.env.SEED_ADMIN_EMAIL ?? "admin@revestia.app",
+    // trim + minúsculas: el login busca el email en minúsculas
+    email: (process.env.SEED_ADMIN_EMAIL ?? "admin@revestia.app").trim().toLowerCase(),
     password: process.env.SEED_ADMIN_PASSWORD ?? "RevestIA2026!",
   },
   client: { email: "demo@ceramicasdelsur.com", password: process.env.SEED_DEMO_PASSWORD ?? "Demo2026!" },
@@ -46,7 +47,9 @@ const commerces = [
 const names = ["Lucía", "Martín", "Sofía", "Juan", "Valentina", "Tomás", "Camila", "Mateo", "Julieta", "Nicolás", "Agustina", "Federico"];
 
 async function main() {
-  if (process.argv.includes("--if-empty") && (await prisma.user.count()) > 0) {
+  // Se mira si hay comercios (no usuarios): si un seed anterior falló a mitad de camino
+  // y dejó solo al superadmin, esta vez se vuelve a cargar todo.
+  if (process.argv.includes("--if-empty") && (await prisma.commerce.count()) > 0) {
     console.log("✔ La base ya tiene datos: seed omitido");
     return;
   }
@@ -95,6 +98,8 @@ async function main() {
         planExpiresAt: c.plan === "FREE" ? null : new Date(Date.now() + between(-20, 45) * 86400000),
         createdAt,
         users: {
+          // Si el email del superadmin coincide con un usuario de demo, ese usuario se saltea
+          // (el email es único en la base y si no el seed falla).
           create: [
             {
               email: i === 0 ? DEMO.client.email : `admin@${slug}.com`,
@@ -105,7 +110,11 @@ async function main() {
             ...(i === 0
               ? [{ email: DEMO.presenter.email, name: "Juliana Paz", role: "CLIENT", passwordHash: await bcrypt.hash(DEMO.presenter.password, 10) }]
               : []),
-          ],
+          ].filter((u) => {
+            if (u.email !== DEMO.superadmin.email) return true;
+            console.warn(`⚠ ${u.email} ya es el superadmin: no se crea como usuario de comercio`);
+            return false;
+          }),
         },
         paymentMethods: {
           create: [
