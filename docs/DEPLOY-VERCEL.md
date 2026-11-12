@@ -28,6 +28,12 @@ Hay que hacerlos **en este orden**, porque las webs necesitan la URL de la API.
    | `JWT_SECRET` | Un texto largo y aleatorio (abajo te explico cómo generarlo) |
    | `SEED_ADMIN_EMAIL` | El email con el que vas a entrar al superadmin |
    | `SEED_ADMIN_PASSWORD` | Una contraseña fuerte para el superadmin |
+   | `DEMO_ADMIN_EMAIL` | *(Opcional)* Email de un superadmin extra para demos |
+   | `DEMO_ADMIN_PASSWORD` | *(Opcional)* Contraseña de ese superadmin de demo |
+   | `DEMO_CLIENT_EMAIL` | *(Opcional)* Email de una cuenta de **cliente** para demos |
+   | `DEMO_CLIENT_PASSWORD` | *(Opcional)* Contraseña de esa cuenta de cliente |
+
+   El superadmin y las cuentas de demo se crean o actualizan **en cada deploy** a partir de estas variables (`packages/db/prisma/ensure-accounts.ts`). Para cambiar un usuario o una contraseña, editá la variable y hacé **Redeploy**. Las credenciales nunca se guardan en el repositorio. La cuenta de cliente entra al comercio demo `ceramicas-del-sur`; para usar otro, definí `DEMO_CLIENT_COMMERCE` con su slug.
 
    Para generar `JWT_SECRET`, ejecutá esto en una terminal y copiá el resultado:
    ```bash
@@ -39,7 +45,7 @@ Hay que hacerlos **en este orden**, porque las webs necesitan la URL de la API.
 
 6. Dentro del proyecto `revestia-api`, andá a la pestaña **Storage → Create Database → Neon (Serverless Postgres)**.
 7. Elegí el plan **Free** y la región más cercana (por ejemplo `Washington, D.C. (iad1)` o São Paulo, si aparece). Hacé click en **Create** y aceptá conectarla al proyecto `revestia-api`.
-   Esto agrega solo las variables `DATABASE_URL` y `DATABASE_URL_UNPOOLED`.
+   En **Custom Prefix** escribí `DATABASE`: así se crean `DATABASE_URL` y `DATABASE_URL_UNPOOLED`, que son las que usa la app (con el prefijo por defecto, `STORAGE`, el build falla).
 8. Andá a **Deployments**, abrí el menú **⋯** del último deploy y elegí **Redeploy**.
 
 Durante el build pasa esto:
@@ -101,6 +107,8 @@ La API solo acepta pedidos que vengan de las dos webs. Para habilitarlas:
 |---|---|
 | El build de la API falla con `Environment variable not found: DATABASE_URL` | Falta conectar Neon al proyecto (paso 6) o hacer el redeploy |
 | El build falla con `Definí SEED_ADMIN_PASSWORD` | Falta esa variable en el proyecto de la API |
+| El build no encuentra `vercel.json` o compila otra cosa | Al importar, Vercel puede proponer `apps` como Root Directory: tiene que ser `apps/api`, `apps/web-client` o `apps/web-admin` |
+| "Redeploy" no hace nada | Vercel puede pedir un código que manda por email (*Send code*) antes de publicar a mano |
 | Las webs cargan, pero el login dice "Error de conexión" | `VITE_API_URL` está mal (le falta `/api` o tiene un error de tipeo), o falta `CLIENT_APP_URL` / `ADMIN_APP_URL` en la API. Después de cambiar una variable siempre hay que hacer **Redeploy** |
 | `Cannot find module` en el build | En **Settings → Build & Deployment**, revisá que esté activado *Include files outside the root directory in the Build Step* |
 | Una página da 404 al recargarla | Revisá que `vercel.json` esté dentro de la carpeta de esa web |
