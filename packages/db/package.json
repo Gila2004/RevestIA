@@ -9,9 +9,10 @@
     "generate": "prisma generate",
     "push": "prisma db push",
     "seed": "tsx prisma/seed.ts",
+    "accounts": "tsx prisma/ensure-accounts.ts",
     "studio": "prisma studio",
     "pg:schema": "node scripts/pg-schema.mjs",
-    "pg:deploy": "node scripts/pg-schema.mjs && prisma generate --schema prisma/schema.postgres.prisma && prisma db push --skip-generate --schema prisma/schema.postgres.prisma && tsx prisma/seed.ts --if-empty",
+    "pg:deploy": "node scripts/pg-schema.mjs && prisma generate --schema prisma/schema.postgres.prisma && prisma db push --skip-generate --schema prisma/schema.postgres.prisma && tsx prisma/seed.ts --if-empty && tsx prisma/ensure-accounts.ts",
     "postinstall": "prisma generate"
   },
   "dependencies": {
